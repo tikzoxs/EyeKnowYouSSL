@@ -41,7 +41,7 @@ def main(unused_argv):
 	# logging.info('config: %s', FLAGS)
 	logging.info('workdir: %s', FLAGS.workdir)
 
-	eyeknowyou_ssl_model = keras.applications.resnet_v2.ResNet50V2(include_top=False, weights=None, input_tensor=None, input_shape=(256,512,1), pooling='avg', classes=4)
+	eyeknowyou_ssl_model = keras.applications.resnet_v2.ResNet50V2(include_top=False, weights=None, input_tensor=None, input_shape=(128,128,1), pooling='avg', classes=4)
 	eyeknowyou_ssl_model.summary()
 	eyeknowyou_ssl_model.compile(optimizer=keras.optimizers.Adadelta(), 
 	              loss=keras.losses.SparseCategoricalCrossentropy(from_logits=True),
@@ -53,7 +53,7 @@ def main(unused_argv):
 		batch_size=int(FLAGS.get_flag_value('train_batch_size', None)), write_graph=True, write_grads=False, write_images=False, embeddings_freq=0, 
 		embeddings_layer_names=None, embeddings_metadata=None, embeddings_data=None, update_freq='epoch')
 	history = eyeknowyou_ssl_model.fit_generator(
-		generators.eyeknowyouTrainDataLoader(), 
+		generators.eyeknowyouTrainGenerator(), 
 		steps_per_epoch=None, epochs=int(FLAGS.get_flag_value('epochs', None)), verbose=1, callbacks=[checkpointer,tensorboard,reduce_lr], 
 		validation_data=None, validation_steps=None, validation_freq=1, class_weight=None, 
 		max_queue_size=10, workers=1, use_multiprocessing=False, shuffle=True, initial_epoch=0)
