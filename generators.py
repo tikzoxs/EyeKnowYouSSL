@@ -34,7 +34,6 @@ def eyeknowyouTrainGenerator():
 			#keras.preprocessing.image.array_to_img(image).show()
 			images.append(image)
 			labels.append(angle)
-			# print(np.asarray(images).shape)
 			image_count += 1	
 			if(image_count == batch_size):
 				image_count = 0
