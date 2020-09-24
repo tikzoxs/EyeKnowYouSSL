@@ -19,26 +19,31 @@ def eyeknowyouTrainGenerator():
 	file_list = os.listdir(folder)
 	random.shuffle(file_list)
 	count = 0
+	image_count = 0
+	images = []
+	labels = []
 	while(count<1000000):
 		count += 1
 		for file in file_list:
-			images = []
-			labels = []
-			image_count = 0
+			
 			image = keras.preprocessing.image.load_img(folder + '/' + file, color_mode='grayscale', target_size=(144,256))
 			image = tf.image.random_crop(keras.preprocessing.image.img_to_array(image), (128,128,1), seed=random.randint(0, 1000))
-			angle = random.randint(1, 3)
+			angle = random.randint(0, 3)
 			image = tf.image.rot90(image, k=angle)	
+			#uncomment the line below to examine the image
+			#keras.preprocessing.image.array_to_img(image).show()
 			images.append(image)
 			labels.append(angle)
 			image_count += 1	
 			if(image_count == batch_size):
 				image_count = 0
 				yield (tf.reshape(images, [batch_size,128,128,1]),tf.reshape(labels, [batch_size]))
+				images = []
+				labels = []
 
 
 
-# # HDF5 format generators
+# # HDF5 format generatorsgit
 # def eyeknowyouTrainDataLoader():
 # 	folder = FLAGS.get_flag_value('train_folder', "/home/tharindu/Desktop/black/data/eyeknowyou")
 # 	batch_size = int(FLAGS.get_flag_value('train_batch_size', None))
